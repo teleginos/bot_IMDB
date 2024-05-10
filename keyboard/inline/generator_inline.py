@@ -1,9 +1,4 @@
-import asyncio
-
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-
-
-# from api import get_movies, get_series
 
 
 async def generator_inline(key_list):
@@ -15,7 +10,3 @@ async def generator_inline(key_list):
     keyboard = InlineKeyboardMarkup(inline_keyboard=buttons)
 
     return keyboard
-
-
-# if __name__ == "__main__":
-    # print(asyncio.run(generator_inline(result_get_movies)))

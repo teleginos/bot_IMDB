@@ -1,9 +1,10 @@
 from aiogram import F, Router, types
-
-from keyboard.inline.generator_inline import generator_inline
-from api import get_movies
 from aiogram.enums import ParseMode
+from aiogram.fsm.context import FSMContext
 
+from api import get_movies
+from keyboard.inline.generator_inline import generator_inline
+from states.state import GetMovie
 
 router = Router()
 
@@ -14,13 +15,14 @@ if not result_get_movies:
 
 
 @router.message(F.text.lower() == "топ 100 фильмов")
-async def choice_key_movies(message: types.Message):
-    keyboard = await generator_inline(result_get_movies)
-    await message.answer('Выбор фильмов', reply_markup=keyboard)
+async def choice_key_movies(message: types.Message, state: FSMContext):
+    inline_keyboard_movies = await generator_inline(result_get_movies)
+    await message.answer('Выбор фильмов', reply_markup=inline_keyboard_movies)
+    await state.set_state(GetMovie.movie)
 
 
-@router.callback_query()
-async def button_click_handler(query: types.CallbackQuery):
+@router.callback_query(GetMovie.movie)
+async def button_movie_click_handler(query: types.CallbackQuery):
     button_text = query.data
     movie = result_get_movies[int(button_text) - 1]
 
@@ -30,6 +32,3 @@ async def button_click_handler(query: types.CallbackQuery):
                                f"<b>Genre</b>: {', '.join(movie['genre'])}\n"
                                f"<b>Rating</b>: {movie['rating']}\n"
                                f"<b>Year</b>: {movie['year']}", parse_mode=ParseMode.HTML)
-
-
-

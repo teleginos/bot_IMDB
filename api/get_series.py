@@ -11,6 +11,4 @@ headers = {
     "X-RapidAPI-Host": host
 }
 
-response = requests.get(url, headers=headers)
-
-
+response = requests.get(url, headers=headers).json()

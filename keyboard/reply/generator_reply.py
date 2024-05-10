@@ -13,7 +13,3 @@ async def generator_reply(key_list, buttons_in_a_row):
     keyboard = ReplyKeyboardMarkup(keyboard=kb, resize_keyboard=True)
 
     return keyboard
-
-
-if __name__ == "__main__":
-    print(asyncio.run(generator_reply(['1', '2', '3'], 1)))
